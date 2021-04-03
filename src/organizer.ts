@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 
 import { Promise as NodeID3 } from 'node-id3';
 
@@ -7,9 +8,12 @@ function existsFolder(directory: string) {
 }
 
 async function scanMusicFolder(directory: string) {
+  const EXTENSIONS = ['.mp3'];
   try {
     const files = await fs.promises.readdir(directory);
-    return files;
+    return files.filter((file) => {
+      return EXTENSIONS.includes(path.extname(file).toLowerCase());
+    });
   } catch (err) {
     console.log('err scanning files');
   }
@@ -44,11 +48,13 @@ export async function organizer({
 
   const files = await scanMusicFolder(musicFolder);
 
-  if (!files) {
+  if (!files || files.length === 0) {
     throw new Error(`Couldn't find any files`);
   }
 
   const musicData = await getMusicInfo(musicFolder, files);
 
-  console.log(musicData);
+  const artists = musicData.map((musicInfo) => {
+    return musicInfo.artist?.split(',')[0].trim();
+  });
 }
