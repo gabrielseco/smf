@@ -1,9 +1,23 @@
+import fs from 'fs';
+
+function existsFolder(directory: string) {
+  return fs.existsSync(directory);
+}
+
 export function organizer({
-  searchFolder,
+  musicFolder,
   destinationFolder
 }: {
-  searchFolder: string;
+  musicFolder: string;
   destinationFolder: string;
 }) {
-  return true;
+  if (!existsFolder(musicFolder)) {
+    throw new Error(`Music folder ${musicFolder} could not be found`);
+  }
+
+  if (!existsFolder(destinationFolder)) {
+    throw new Error('Destination folder cannot be found');
+  }
+
+  console.log('continue');
 }

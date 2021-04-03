@@ -5,7 +5,8 @@
     "module": "commonjs",
     "target": "es6",
     "esModuleInterop": true,
-    "strict": true
+    "strict": true,
+    "resolveJsonModule": false
   },
   "exclude": [
     "src/**/*.spec.ts",
