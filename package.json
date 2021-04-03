@@ -43,7 +43,8 @@
     "@inquirer/input": "0.0.14-alpha.0",
     "@inquirer/password": "0.0.13-alpha.0",
     "commander": "7.2.0",
-    "luxon": "1.26.0"
+    "luxon": "1.26.0",
+    "node-id3": "^0.2.2"
   },
   "lint-staged": {
     "src/**/*.ts": [

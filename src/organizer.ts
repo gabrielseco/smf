@@ -1,5 +1,7 @@
 import fs from 'fs';
 
+import { Promise as NodeID3 } from 'node-id3';
+
 function existsFolder(directory: string) {
   return fs.existsSync(directory);
 }
@@ -11,6 +13,18 @@ async function scanMusicFolder(directory: string) {
   } catch (err) {
     console.log('err scanning files');
   }
+}
+
+async function getMusicInfo(musicFolder: string, files: string[]) {
+  const musicInfo = [];
+
+  for (const file of files) {
+    const fileData = await NodeID3.read(`${musicFolder}/${file}`);
+
+    musicInfo.push(fileData);
+  }
+
+  return musicInfo;
 }
 
 export async function organizer({
@@ -30,7 +44,11 @@ export async function organizer({
 
   const files = await scanMusicFolder(musicFolder);
 
-  console.log({ files });
+  if (!files) {
+    throw new Error(`Couldn't find any files`);
+  }
 
-  console.log('continue');
+  const musicData = await getMusicInfo(musicFolder, files);
+
+  console.log(musicData);
 }
