@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-import { update, Promise as NodeID3, Tags } from 'node-id3';
+import { Promise as NodeID3, Tags } from 'node-id3';
 import mkdirp from 'mkdirp';
 
 function existsFolder(directory: string) {
@@ -45,7 +45,9 @@ async function createFoldersBasedInArtists(
   artists: Set<string>
 ) {
   const promises = [...artists].map((artist) => {
-    return mkdirp(`${destinationFolder}/${artist}`);
+    const directory = `${destinationFolder}/${artist}`;
+    console.log(`creating folder ${directory}`);
+    return mkdirp(directory);
   });
 
   return Promise.all(promises);
@@ -91,9 +93,13 @@ function createFoldersAlbum(
   musicInfo: Record<string, TagsWithFile[]>
 ) {
   const promises = Object.keys(musicInfo).map((artist) => {
-    return musicInfo[artist].map((item) => {
-      return mkdirp(`${destinationFolder}/${artist}/${item.album}`);
-    });
+    return Promise.all(
+      musicInfo[artist].map((item) => {
+        const directory = `${destinationFolder}/${artist}/${item.album}`;
+        console.log(`creating folder ${directory}`);
+        return mkdirp(directory);
+      })
+    );
   });
 
   return Promise.all(promises);
@@ -131,10 +137,14 @@ async function copyFilesToDestinationFolder(
     const promises = value.map(({ file, album }) => {
       const fileIndex = file.lastIndexOf('/');
       const fileName = file.slice(fileIndex + 1);
-      return copyFile(file, `${destinationPath}/${album}/${fileName}`);
+      const directory = `${destinationPath}/${album}`;
+
+      if (existsFolder(directory)) {
+        return copyFile(file, `${directory}/${fileName}`);
+      }
     });
 
-    return promises;
+    return Promise.all(promises);
   });
 
   return Promise.all(promises);
@@ -166,8 +176,6 @@ export async function organizer({
     console.log(`Copying ${files.length} files to ${destinationFolder}`);
 
     const musicData = await getMusicInfo(musicFolder, files);
-
-    console.log({ musicData });
 
     await updateTagsSongs(musicData);
 
