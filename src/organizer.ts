@@ -68,26 +68,6 @@ function getSongsGroupedByArtist(musicInfo: TagsWithFile[]) {
   return songsGroupedByArtist;
 }
 
-async function updateTagsSongs(musicInfo: TagsWithFile[]) {
-  for (let index = 0; index < musicInfo.length; index++) {
-    const tags = await NodeID3.read(musicInfo[index].file, { noRaw: true });
-
-    delete (tags as any).image.type;
-    delete (tags as any).image.mime;
-
-    await NodeID3.update(
-      {
-        ...tags,
-        unsynchronisedLyrics: undefined,
-        copyright: '',
-        artistUrl: [],
-        audioSourceUrl: ''
-      },
-      musicInfo[index].file
-    );
-  }
-}
-
 function createFoldersAlbum(
   destinationFolder: string,
   musicInfo: Record<string, TagsWithFile[]>
@@ -166,31 +146,25 @@ export async function organizer({
     throw new Error('Destination folder cannot be found');
   }
 
-  try {
-    const files = await scanMusicFolder(musicFolder);
+  const files = await scanMusicFolder(musicFolder);
 
-    if (!files || files.length === 0) {
-      throw new Error(`Couldn't find any files`);
-    }
-
-    console.log(`Copying ${files.length} files to ${destinationFolder}`);
-
-    const musicData = await getMusicInfo(musicFolder, files);
-
-    await updateTagsSongs(musicData);
-
-    const artists = getArtistsFoldersName(musicData);
-
-    await createFoldersBasedInArtists(destinationFolder, artists);
-
-    const songsGroupedByArtist = getSongsGroupedByArtist(musicData);
-
-    await createFoldersAlbum(destinationFolder, songsGroupedByArtist);
-
-    await copyFilesToDestinationFolder(destinationFolder, songsGroupedByArtist);
-
-    console.log('Task Finished');
-  } catch (err) {
-    console.log({ err });
+  if (!files || files.length === 0) {
+    throw new Error(`Couldn't find any files`);
   }
+
+  console.log(`Copying ${files.length} files to ${destinationFolder}`);
+
+  const musicData = await getMusicInfo(musicFolder, files);
+
+  const artists = getArtistsFoldersName(musicData);
+
+  await createFoldersBasedInArtists(destinationFolder, artists);
+
+  const songsGroupedByArtist = getSongsGroupedByArtist(musicData);
+
+  await createFoldersAlbum(destinationFolder, songsGroupedByArtist);
+
+  await copyFilesToDestinationFolder(destinationFolder, songsGroupedByArtist);
+
+  console.log('Task Finished');
 }
