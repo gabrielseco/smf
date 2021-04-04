@@ -142,6 +142,8 @@ export async function organizer({
     throw new Error(`Couldn't find any files`);
   }
 
+  console.log(`Copying ${files.length} files to ${destinationFolder}`);
+
   const musicData = await getMusicInfo(musicFolder, files);
 
   const artists = getArtistsFoldersName(musicData);
