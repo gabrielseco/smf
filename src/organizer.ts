@@ -4,9 +4,9 @@ import path from 'path';
 import { Promise as NodeID3, Tags } from 'node-id3';
 import mkdirp from 'mkdirp';
 
-function existsFolder(directory: string) {
-  return fs.existsSync(directory);
-}
+import { existsFolder, copyFile } from './utils';
+
+type TagsWithFile = Tags & { file: string };
 
 async function scanMusicFolder(directory: string) {
   const EXTENSIONS = ['.mp3'];
@@ -53,21 +53,6 @@ async function createFoldersBasedInArtists(
   return Promise.all(promises);
 }
 
-type TagsWithFile = Tags & { file: string };
-
-function getSongsGroupedByArtist(musicInfo: TagsWithFile[]) {
-  const songsGroupedByArtist = musicInfo.reduce((acc, item) => {
-    const artistName = item.artist?.split(',')[0].trim() as string;
-    const accumulatedSongs = acc[artistName] ? acc[artistName] : [];
-    return {
-      ...acc,
-      [artistName]: [...accumulatedSongs, item]
-    };
-  }, {} as Record<string, TagsWithFile[]>);
-
-  return songsGroupedByArtist;
-}
-
 function createFoldersAlbum(
   destinationFolder: string,
   musicInfo: Record<string, TagsWithFile[]>
@@ -85,13 +70,17 @@ function createFoldersAlbum(
   return Promise.all(promises);
 }
 
-function copyFile(src: string, destination: string) {
-  return new Promise<void>((resolve, reject) => {
-    fs.copyFile(src, destination, (err) => {
-      if (err) reject(err);
-      resolve();
-    });
-  });
+function getSongsGroupedByArtist(musicInfo: TagsWithFile[]) {
+  const songsGroupedByArtist = musicInfo.reduce((acc, item) => {
+    const artistName = item.artist?.split(',')[0].trim() as string;
+    const accumulatedSongs = acc[artistName] ? acc[artistName] : [];
+    return {
+      ...acc,
+      [artistName]: [...accumulatedSongs, item]
+    };
+  }, {} as Record<string, TagsWithFile[]>);
+
+  return songsGroupedByArtist;
 }
 
 async function copyFilesToDestinationFolder(
