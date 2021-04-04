@@ -28,7 +28,7 @@
   "devDependencies": {
     "@rogal/front-linter": "4.0.0-beta.1",
     "@types/jest": "26.0.22",
-    "@types/luxon": "1.26.2",
+    "@types/luxon": "1.26.3",
     "@types/mkdirp": "1.0.1",
     "eslint-import-resolver-typescript": "^2.4.0",
     "husky": "4.2.3",
