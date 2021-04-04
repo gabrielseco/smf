@@ -3,7 +3,6 @@ import path from 'path';
 
 import { Promise as NodeID3, Tags } from 'node-id3';
 import mkdirp from 'mkdirp';
-import copyfiles from 'copyfiles';
 
 function existsFolder(directory: string) {
   return fs.existsSync(directory);
@@ -67,6 +66,19 @@ function getSongsGroupedByArtist(musicInfo: TagsWithFile[]) {
   return songsGroupedByArtist;
 }
 
+function createFoldersAlbum(
+  destinationFolder: string,
+  musicInfo: Record<string, TagsWithFile[]>
+) {
+  const promises = Object.keys(musicInfo).map((artist) => {
+    return musicInfo[artist].map((item) => {
+      return mkdirp(`${destinationFolder}/${artist}/${item.album}`);
+    });
+  });
+
+  return Promise.all(promises);
+}
+
 function copyFile(src: string, destination: string) {
   return new Promise<void>((resolve, reject) => {
     fs.copyFile(src, destination, (err) => {
@@ -80,11 +92,13 @@ async function copyFilesToDestinationFolder(
   destinationFolder: string,
   songsGroupedByArtist: Record<string, TagsWithFile[]>
 ) {
-  const paths: Array<{ [key: string]: string[] }> = Object.keys(
-    songsGroupedByArtist
-  ).map((key) => {
+  const paths: Array<{
+    [key: string]: { file: string; album?: string }[];
+  }> = Object.keys(songsGroupedByArtist).map((key) => {
     return {
-      [key]: songsGroupedByArtist[key].map((item) => item.file)
+      [key]: songsGroupedByArtist[key].map((item) => {
+        return { file: item.file, album: item.album };
+      })
     };
   });
 
@@ -94,10 +108,10 @@ async function copyFilesToDestinationFolder(
 
     const destinationPath = `${destinationFolder}/${artist}`;
 
-    const promises = value.map((file) => {
+    const promises = value.map(({ file, album }) => {
       const fileIndex = file.lastIndexOf('/');
-      const fileName = file.slice(fileIndex);
-      return copyFile(file, `${destinationPath}/${fileName}`);
+      const fileName = file.slice(fileIndex + 1);
+      return copyFile(file, `${destinationPath}/${album}/${fileName}`);
     });
 
     return promises;
@@ -113,6 +127,7 @@ export async function organizer({
   musicFolder: string;
   destinationFolder: string;
 }) {
+  console.log('Starting Task');
   if (!existsFolder(musicFolder)) {
     throw new Error(`Music folder ${musicFolder} could not be found`);
   }
@@ -135,5 +150,9 @@ export async function organizer({
 
   const songsGroupedByArtist = getSongsGroupedByArtist(musicData);
 
+  await createFoldersAlbum(destinationFolder, songsGroupedByArtist);
+
   await copyFilesToDestinationFolder(destinationFolder, songsGroupedByArtist);
+
+  console.log('Task Finished');
 }
