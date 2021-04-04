@@ -29,6 +29,7 @@
     "@rogal/front-linter": "4.0.0-beta.1",
     "@types/jest": "26.0.22",
     "@types/luxon": "1.26.2",
+    "@types/mkdirp": "1.0.1",
     "eslint-import-resolver-typescript": "^2.4.0",
     "husky": "4.2.3",
     "jest": "26.6.3",
@@ -44,6 +45,7 @@
     "@inquirer/password": "0.0.13-alpha.0",
     "commander": "7.2.0",
     "luxon": "1.26.0",
+    "mkdirp": "1.0.4",
     "node-id3": "^0.2.2"
   },
   "lint-staged": {
