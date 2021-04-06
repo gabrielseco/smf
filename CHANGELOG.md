@@ -1,3 +1,7 @@
+# [1.0.0-beta.2](https://github.com/gabrielseco/smf/compare/1.0.0-beta.0...1.0.0-beta.2) (2021-04-06)
+
+
+
 # Change Log
 All notable changes to this project will be documented in this file.
 
