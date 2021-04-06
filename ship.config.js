@@ -1,5 +1,5 @@
 module.exports = {
   releases: {
-    assetsToUpload: 'exec/*'
+    assetsToUpload: ['exec/smf-linux', 'exec/smf-macos', 'exec/smf-win.exe']
   }
 };
