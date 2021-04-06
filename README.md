@@ -28,9 +28,3 @@ Start takes the actual time and inserts it in the day of the week.
   smf organize
 ```
 
-### Options
-
-| Option | Alias | Description |
-| --- | --- | --- |
-| --debug | -d | Debug puppeteer so you what happens under the hood |
-| --time | -t | Give a time in hh:mm format so you can put the time you want for a day |
