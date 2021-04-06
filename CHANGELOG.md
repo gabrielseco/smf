@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 ### BREAKING CHANGES
 
+# [1.0.0-beta.2] (2021-04-06)
+
+### Changed
+
+-  Update Readme
 
 # [1.0.0-beta.1] (2021-04-06)
 
