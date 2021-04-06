@@ -1,5 +1,5 @@
 # @rogal/smf
-[![NPM Version](https://img.shields.io/npm/v/@rogal/smf.svg)](https://www.npmjs.com/package/@rogal/smf) [![NPM Downloads](https://img.shields.io/npm/dm/@rogal/smf.svg)](https://www.npmjs.com/package/@rogal/smf)[![Travis](https://api.travis-ci.com/gabrielseco/@rogal/smf.svg?branch=master)](https://travis-ci.org/gabrielseco/@rogal/smf) [![Coverage Status](https://coveralls.io/repos/github/gabrielseco/@rogal/smf/badge.svg?branch=master)](https://coveralls.io/github/gabrielseco/@rogal/smf?branch=master)
+[![NPM Version](https://img.shields.io/npm/v/@rogal/smf.svg)](https://www.npmjs.com/package/@rogal/smf) [![NPM Downloads](https://img.shields.io/npm/dm/@rogal/smf.svg)](https://www.npmjs.com/package/@rogal/smf) [![Coverage Status](https://coveralls.io/repos/github/gabrielseco/@rogal/smf/badge.svg?branch=master)](https://coveralls.io/github/gabrielseco/@rogal/smf?branch=master)
 
  > A holded robot responsible to take hours for you
 
