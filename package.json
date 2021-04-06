@@ -54,8 +54,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "npm run bundle"
+      "pre-commit": "lint-staged && npm run bundle"
     }
   },
   "eslintConfig": {
