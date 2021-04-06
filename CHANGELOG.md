@@ -1,7 +1,3 @@
-# [1.0.0-beta.3](https://github.com/gabrielseco/smf/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2021-04-06)
-
-
-
 # Change Log
 All notable changes to this project will be documented in this file.
 
@@ -16,6 +12,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Removed
 ### BREAKING CHANGES
+
+# [1.0.0-beta.3] (2021-04-06)
+### Added
+
+- Added build assets to repo
 
 # [1.0.0-beta.2] (2021-04-06)
 
