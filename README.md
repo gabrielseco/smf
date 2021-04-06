@@ -1,5 +1,5 @@
 # @rogal/smf
-[![NPM Version](https://img.shields.io/npm/v/@rogal/smf.svg)](https://www.npmjs.com/package/@rogal/smf) [![NPM Downloads](https://img.shields.io/npm/dm/@rogal/smf.svg)](https://www.npmjs.com/package/@rogal/smf) [![Coverage Status](https://coveralls.io/repos/github/gabrielseco/@rogal/smf/badge.svg?branch=master)](https://coveralls.io/github/gabrielseco/@rogal/smf?branch=master)
+[![NPM Version](https://img.shields.io/npm/v/@rogal/smf.svg)](https://www.npmjs.com/package/@rogal/smf) [![NPM Downloads](https://img.shields.io/npm/dm/@rogal/smf.svg)](https://www.npmjs.com/package/@rogal/smf) [![Coverage Status](https://coveralls.io/repos/github/gabrielseco/smf/badge.svg)](https://coveralls.io/github/gabrielseco/smf)
 
  > A cli which organizes music
 
