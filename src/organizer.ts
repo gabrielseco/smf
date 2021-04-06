@@ -1,4 +1,4 @@
-import fs from 'fs';
+import { promises } from 'fs';
 import path from 'path';
 
 import { Promise as NodeID3, Tags } from 'node-id3';
@@ -8,15 +8,15 @@ import { existsFolder, copyFile } from './utils';
 
 type TagsWithFile = Tags & { file: string };
 
-async function scanMusicFolder(directory: string) {
+export async function scanMusicFolder(directory: string) {
   const EXTENSIONS = ['.mp3'];
   try {
-    const files = await fs.promises.readdir(directory);
+    const files = await promises.readdir(directory);
     return files.filter((file) => {
       return EXTENSIONS.includes(path.extname(file).toLowerCase());
     });
   } catch (err) {
-    console.log('err scanning files');
+    console.log('err scanning files', err);
   }
 }
 
