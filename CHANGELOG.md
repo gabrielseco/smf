@@ -13,6 +13,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 ### BREAKING CHANGES
 
+# [1.0.0-beta.4] (2021-04-06)
+
+### Fixed
+
+- Trying to fix assets uploads
+
 # [1.0.0-beta.3] (2021-04-06)
 ### Added
 
