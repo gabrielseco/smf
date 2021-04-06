@@ -32,7 +32,7 @@ async function getMusicInfo(musicFolder: string, files: string[]) {
   return musicInfo;
 }
 
-function getArtistsFoldersName(musicInfo: Tags[]) {
+export function getArtistsFoldersName(musicInfo: Tags[]) {
   const artists = musicInfo.map((musicItem) => {
     return musicItem.artist?.split(',')[0].trim() as string;
   });

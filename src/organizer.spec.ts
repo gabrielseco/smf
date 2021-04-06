@@ -1,6 +1,6 @@
 import { promises } from 'fs';
 
-import { scanMusicFolder } from './organizer';
+import { getArtistsFoldersName, scanMusicFolder } from './organizer';
 
 jest.mock('fs');
 
@@ -34,6 +34,27 @@ describe('Organizer', () => {
       const files = scanMusicFolder('');
 
       expect(files).resolves.toEqual(['hello.mp3']);
+    });
+  });
+
+  describe('getArtistsFoldersName', () => {
+    it('should output an array of unique artists', () => {
+      const artists = getArtistsFoldersName([
+        {
+          artist: 'Nicky Romero'
+        },
+        {
+          artist: 'Nicky Romero'
+        },
+        {
+          artist: 'Timmo Hendricks'
+        },
+        {
+          artist: 'Timmo Hendricks'
+        }
+      ]);
+
+      expect(artists).toEqual(new Set(['Nicky Romero', 'Timmo Hendricks']));
     });
   });
 });
