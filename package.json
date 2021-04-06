@@ -1,6 +1,6 @@
 {
   "name": "@rogal/smf",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "description": "Save music to a determined folder",
   "author": "Gabriel García Seco <ggarciaseco@gmail.com>",
   "keywords": [
