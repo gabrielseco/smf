@@ -109,29 +109,29 @@ async function copyFilesToDestinationFolder(
   destinationFolder: string,
   songsGroupedByArtist: Record<string, TagsWithFile[]>
 ) {
-  const paths: Array<{
-    [key: string]: { file: string; album?: string }[];
+  const filePaths: Array<{
+    [key: string]: { file: string; album?: string; title?: string }[];
   }> = Object.keys(songsGroupedByArtist).map((key) => {
     return {
       [key]: songsGroupedByArtist[key].map((item) => {
-        return { file: item.file, album: item.album };
+        return { file: item.file, album: item.album, title: item.title };
       })
     };
   });
 
-  const promises = paths.map((path) => {
-    const artist = Object.keys(path)[0];
-    const value = path[artist];
+  const promises = filePaths.map((filePath) => {
+    const artist = Object.keys(filePath)[0];
+    const value = filePath[artist];
 
     const destinationPath = `${destinationFolder}/${artist}`;
 
-    const promises = value.map(({ file, album }) => {
-      const fileIndex = file.lastIndexOf('/');
-      const fileName = file.slice(fileIndex + 1);
+    const promises = value.map(({ file, album, title }) => {
+      const extension = path.extname(file).toLowerCase();
       const directory = `${destinationPath}/${album}`;
+      const fileNameModified = `${title}${extension}`;
 
       if (existsFolder(directory)) {
-        return copyFile(file, `${directory}/${fileName}`);
+        return copyFile(file, `${directory}/${fileNameModified}`);
       }
     });
 
