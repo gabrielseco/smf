@@ -13,6 +13,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 ### BREAKING CHANGES
 
+# [1.0.0-beta.5] (2021-04-11)
+
+### Added
+
+- Clean tags 
+
 # [1.0.0-beta.4] (2021-04-06)
 
 ### Fixed
