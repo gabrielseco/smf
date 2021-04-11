@@ -32,6 +32,28 @@ async function getMusicInfo(musicFolder: string, files: string[]) {
   return musicInfo;
 }
 
+async function updateTagsSongs(musicInfo: TagsWithFile[]) {
+  for (let index = 0; index < musicInfo.length; index++) {
+    const tags = await NodeID3.read(musicInfo[index].file, { noRaw: true });
+    delete (tags as any).image.type;
+    delete (tags as any).image.mime;
+
+    await NodeID3.update(
+      {
+        ...tags,
+        unsynchronisedLyrics: undefined,
+        copyright: '',
+        artistUrl: [],
+        audioSourceUrl: '',
+        comment: undefined,
+        trackNumber: undefined,
+        partOfSet: undefined
+      },
+      musicInfo[index].file
+    );
+  }
+}
+
 export function getArtistsFoldersName(musicInfo: Tags[]) {
   const artists = musicInfo.map((musicItem) => {
     return musicItem.artist?.split(',')[0].trim() as string;
@@ -87,29 +109,29 @@ async function copyFilesToDestinationFolder(
   destinationFolder: string,
   songsGroupedByArtist: Record<string, TagsWithFile[]>
 ) {
-  const paths: Array<{
-    [key: string]: { file: string; album?: string }[];
+  const filePaths: Array<{
+    [key: string]: { file: string; album?: string; title?: string }[];
   }> = Object.keys(songsGroupedByArtist).map((key) => {
     return {
       [key]: songsGroupedByArtist[key].map((item) => {
-        return { file: item.file, album: item.album };
+        return { file: item.file, album: item.album, title: item.title };
       })
     };
   });
 
-  const promises = paths.map((path) => {
-    const artist = Object.keys(path)[0];
-    const value = path[artist];
+  const promises = filePaths.map((filePath) => {
+    const artist = Object.keys(filePath)[0];
+    const value = filePath[artist];
 
     const destinationPath = `${destinationFolder}/${artist}`;
 
-    const promises = value.map(({ file, album }) => {
-      const fileIndex = file.lastIndexOf('/');
-      const fileName = file.slice(fileIndex + 1);
+    const promises = value.map(({ file, album, title }) => {
+      const extension = path.extname(file).toLowerCase();
       const directory = `${destinationPath}/${album}`;
+      const fileNameModified = `${title}${extension}`;
 
       if (existsFolder(directory)) {
-        return copyFile(file, `${directory}/${fileName}`);
+        return copyFile(file, `${directory}/${fileNameModified}`);
       }
     });
 
@@ -144,6 +166,8 @@ export async function organizer({
   console.log(`Copying ${files.length} files to ${destinationFolder}`);
 
   const musicData = await getMusicInfo(musicFolder, files);
+
+  await updateTagsSongs(musicData);
 
   const artists = getArtistsFoldersName(musicData);
 
