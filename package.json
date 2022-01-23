@@ -33,7 +33,7 @@
     "node-id3": "^0.2.2"
   },
   "devDependencies": {
-    "@rogal/front-linter": "4.0.0-beta.5",
+    "@rogal/front-linter": "4.0.0-beta.6",
     "@types/jest": "26.0.24",
     "@types/mkdirp": "1.0.2",
     "eslint-import-resolver-typescript": "2.5.0",
