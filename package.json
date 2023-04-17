@@ -28,7 +28,7 @@
     "release:trigger": "shipjs trigger"
   },
   "dependencies": {
-    "commander": "7.2.0",
+    "commander": "10.0.1",
     "mkdirp": "1.0.4",
     "node-id3": "^0.2.2"
   },
