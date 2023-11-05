@@ -148,36 +148,40 @@ export async function organizer({
   musicFolder: string;
   destinationFolder: string;
 }) {
-  console.log('Starting Task');
-  if (!existsFolder(musicFolder)) {
-    throw new Error(`Music folder ${musicFolder} could not be found`);
+  try {
+    console.log('Starting Task');
+    if (!existsFolder(musicFolder)) {
+      throw new Error(`Music folder ${musicFolder} could not be found`);
+    }
+
+    if (!existsFolder(destinationFolder)) {
+      throw new Error('Destination folder cannot be found');
+    }
+
+    const files = await scanMusicFolder(musicFolder);
+
+    if (!files || files.length === 0) {
+      throw new Error(`Couldn't find any files`);
+    }
+
+    console.log(`Copying ${files.length} files to ${destinationFolder}`);
+
+    const musicData = await getMusicInfo(musicFolder, files);
+
+    await updateTagsSongs(musicData);
+
+    const artists = getArtistsFoldersName(musicData);
+
+    await createFoldersBasedInArtists(destinationFolder, artists);
+
+    const songsGroupedByArtist = getSongsGroupedByArtist(musicData);
+
+    await createFoldersAlbum(destinationFolder, songsGroupedByArtist);
+
+    await copyFilesToDestinationFolder(destinationFolder, songsGroupedByArtist);
+
+    console.log('Task Finished');
+  } catch (error) {
+    console.log(error);
   }
-
-  if (!existsFolder(destinationFolder)) {
-    throw new Error('Destination folder cannot be found');
-  }
-
-  const files = await scanMusicFolder(musicFolder);
-
-  if (!files || files.length === 0) {
-    throw new Error(`Couldn't find any files`);
-  }
-
-  console.log(`Copying ${files.length} files to ${destinationFolder}`);
-
-  const musicData = await getMusicInfo(musicFolder, files);
-
-  await updateTagsSongs(musicData);
-
-  const artists = getArtistsFoldersName(musicData);
-
-  await createFoldersBasedInArtists(destinationFolder, artists);
-
-  const songsGroupedByArtist = getSongsGroupedByArtist(musicData);
-
-  await createFoldersAlbum(destinationFolder, songsGroupedByArtist);
-
-  await copyFilesToDestinationFolder(destinationFolder, songsGroupedByArtist);
-
-  console.log('Task Finished');
 }
