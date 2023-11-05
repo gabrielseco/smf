@@ -35,8 +35,8 @@ async function getMusicInfo(musicFolder: string, files: string[]) {
 async function updateTagsSongs(musicInfo: TagsWithFile[]) {
   for (let index = 0; index < musicInfo.length; index++) {
     const tags = await NodeID3.read(musicInfo[index].file, { noRaw: true });
-    delete (tags as any).image.type;
-    delete (tags as any).image.mime;
+    delete (tags as any).image?.type;
+    delete (tags as any).image?.mime;
 
     await NodeID3.update(
       {
