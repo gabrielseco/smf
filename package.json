@@ -16,7 +16,7 @@
     "!dist/**/*.test.js"
   ],
   "engines": {
-    "node": "18"
+    "node": "16"
   },
   "scripts": {
     "dev": "ts-node ./src/cli.ts",
